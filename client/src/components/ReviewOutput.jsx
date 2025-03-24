@@ -12,6 +12,37 @@ const ReviewOutput = ({ review, loading }) => {
     exit: { opacity: 0 }
   };
 
+  const normalizeLanguage = (lang) => {
+    const languageMap = {
+      'js': 'javascript',
+      'ts': 'typescript',
+      'py': 'python',
+      'rb': 'ruby',
+      'cpp': 'cpp',
+      'c++': 'cpp',
+      'jsx': 'jsx',
+      'tsx': 'typescript',
+      'md': 'markdown',
+      'yml': 'yaml',
+      'sh': 'bash',
+      'cs': 'csharp',
+      'rs': 'rust',
+      'go': 'go',
+      'kt': 'kotlin',
+      'java': 'java',
+      'php': 'php',
+      'html': 'html',
+      'css': 'css',
+      'sql': 'sql',
+      'graphql': 'graphql',
+      'json': 'json',
+    };
+
+    if (!lang) return 'text';
+    const normalized = lang.toLowerCase();
+    return languageMap[normalized] || normalized;
+  };
+
   const markdownComponents = {
     h1: ({ children }) => (
       <motion.h1
@@ -65,16 +96,20 @@ const ReviewOutput = ({ review, loading }) => {
       </blockquote>
     ),
     code: ({ inline, className, children }) => {
+      if (inline) {
+        return (
+          <code className="bg-gray-800 px-1.5 py-0.5 rounded font-mono text-green-300">
+            {children}
+          </code>
+        );
+      }
+
       const match = /language-(\w+)/.exec(className || '');
-      const language = match ? match[1] : 'javascript';
+      const language = normalizeLanguage(match ? match[1] : '');
       
-      return inline ? (
-        <code className="bg-gray-800 px-1.5 py-0.5 rounded font-mono text-green-300">
-          {children}
-        </code>
-      ) : (
-        <CodeBlock language={language}>{children}</CodeBlock>
-      )
+      return (
+        <CodeBlock language={language}>{String(children).trim()}</CodeBlock>
+      );
     },
   };
 
