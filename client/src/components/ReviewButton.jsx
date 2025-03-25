@@ -1,13 +1,27 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 const ReviewButton = ({ handleReview, loading }) => {
+  const { isDark } = useTheme();
+  
   return (
     <button
-      className="mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 transition duration-300 rounded-lg text-white font-semibold disabled:opacity-50"
       onClick={handleReview}
       disabled={loading}
+      className={`mt-4 px-6 py-3 rounded-lg font-medium flex items-center justify-center
+        ${isDark 
+          ? 'bg-blue-500 hover:bg-blue-600' 
+          : 'bg-blue-600 hover:bg-blue-700'} 
+        text-white transition-colors duration-150 disabled:opacity-50`}
     >
-      {loading ? "Reviewing..." : "Get Review"}
+      {loading ? (
+        <>
+          <span className="animate-spin mr-2">⟳</span>
+          Analyzing...
+        </>
+      ) : (
+        'Get Review'
+      )}
     </button>
   );
 };
