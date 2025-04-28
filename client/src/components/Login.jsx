@@ -1,22 +1,35 @@
+
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { LogIn, Mail, Lock, ArrowLeft, AlertCircle } from "lucide-react";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { login } = useContext(AuthContext);
+  const { login, googleAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       await login(email, password);
       navigate("/");
     } catch (err) {
       setError(err.msg || "Login failed");
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setError(null);
+      await googleAuth(credentialResponse.credential);
+      navigate("/");
+    } catch (err) {
+      setError(err.msg || "Google authentication failed");
     }
   };
 
@@ -97,6 +110,14 @@ const Login = () => {
               Sign In
             </button>
           </form>
+
+          <div className="my-6 flex items-center">
+            <div className="flex-1 border-t border-gray-600"></div>
+            <p className="mx-4 text-sm text-gray-400">OR</p>
+            <div className="flex-1 border-t border-gray-600"></div>
+          </div>
+
+          <GoogleAuthButton onSuccess={handleGoogleSuccess} />
 
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-400">

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { UserPlus, Mail, Lock, User, ArrowLeft, AlertCircle } from "lucide-react";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
   });
 
   const [error, setError] = useState("");
+  const { register, googleAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,17 +24,20 @@ const Register = () => {
     setError("");
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_AUTH_API}/register`,
-        formData,
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      alert("Registration successful!");
+      await register(formData.name, formData.email, formData.password);
       navigate("/login");
     } catch (err) {
-      console.error("Registration Error:", err);
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.msg || "Registration failed");
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setError("");
+      await googleAuth(credentialResponse.credential);
+      navigate("/");
+    } catch (err) {
+      setError(err.msg || "Google authentication failed");
     }
   };
 
@@ -133,6 +138,17 @@ const Register = () => {
               Create Account
             </button>
           </form>
+
+          <div className="my-6 flex items-center">
+            <div className="flex-1 border-t border-gray-600"></div>
+            <p className="mx-4 text-sm text-gray-400">OR</p>
+            <div className="flex-1 border-t border-gray-600"></div>
+          </div>
+
+          <GoogleAuthButton 
+            onSuccess={handleGoogleSuccess} 
+            buttonText="Sign up with Google"
+          />
 
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-400">
