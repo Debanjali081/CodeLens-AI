@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { UserPlus, Mail, Lock, User, ArrowLeft, AlertCircle } from "lucide-react";
-import GoogleAuthButton from "../components/GoogleAuthButton";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const Register = () => {
   const [formData, setFormData] = useState({

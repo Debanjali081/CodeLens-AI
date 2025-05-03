@@ -3,9 +3,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
-import CodeEditor from "../components/CodeEditor";
-import ReviewOutput from "../components/ReviewOutput";
-import ReviewButton from "../components/ReviewButton";
+import CodeEditor from "../components/code/CodeEditor";
+import ReviewOutput from "../components/code/ReviewOutput";
+import ReviewButton from "../components/code/ReviewButton";
 import ThemeToggle from "../components/ToggleTheme";
 
 const CodeReviewer = () => {

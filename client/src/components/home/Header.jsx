@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { Code2, LogOut } from 'lucide-react';
-import ThemeToggle from './ToggleTheme';
+import ThemeToggle from '../ToggleTheme';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
