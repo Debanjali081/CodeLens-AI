@@ -23,15 +23,32 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      setError(null);
-      await googleAuth(credentialResponse.credential);
-      navigate("/");
-    } catch (err) {
-      setError(err.msg || "Google authentication failed");
+const handleGoogleSuccess = async (credentialResponse) => {
+  try {
+    setError(null);
+    const response = await fetch('http://localhost:5000/api/auth/google', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ credential: credentialResponse.credential }),
+      credentials: 'include' // Important for cookies
+    });
+
+    if (!response.ok) {
+      throw new Error('Google authentication failed');
     }
-  };
+
+    const data = await response.json();
+    // Store token and user data
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    navigate("/");
+  } catch (err) {
+    console.error('Google auth error:', err);
+    setError(err.message || "Google authentication failed");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white py-16 px-4 sm:px-6 lg:px-8">
