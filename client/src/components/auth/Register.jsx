@@ -33,7 +33,7 @@ const Register = () => {
 const handleGoogleSuccess = async (credentialResponse) => {
   try {
     setError(null);
-    const response = await fetch('http://localhost:3000/api/auth/google', {
+    const response = await fetch('https://codelens-ai.onrender.com/api/auth/google', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

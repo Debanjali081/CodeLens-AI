@@ -14,9 +14,13 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
+const corsOptions = {
+  origin: "https://codelens-ai.onrender.com", 
+  credentials: true, 
+};
 // CORS Configuration
 app.use(
-  cors()
+  cors(corsOptions)
 );
 
 // Routes
