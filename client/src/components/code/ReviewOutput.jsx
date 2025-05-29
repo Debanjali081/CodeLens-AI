@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import {  AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CodeBlock from "./CodeBlock";
 import { LightBulbIcon } from '@heroicons/react/24/outline';
 
